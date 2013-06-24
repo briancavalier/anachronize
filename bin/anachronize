@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var argv, anachronize, dirs, header, footer, template, fakeRequire, mainTemplate, moduleTemplate;
+var argv, anachronize, dirs, header, footer, template, fakeRequire, mainTemplate, defineTemplate;
 
 argv = require('optimist')
 	.usage('Usage $0 -o output-file [input-files...]')
@@ -32,21 +32,19 @@ anachronize = require('../lib/anachronize');
 template = require('../lib/template');
 
 fakeRequire = 'function require(id){return id.split(\'./\')[1] == \'{{main}}\' ? root.{{main}} : root[id.replace(\'../\', \'{{namespacePrefix}}\')]; }';
-header = ';(function(root,undef){';
-footer = 'try{delete root.define;}catch(e){root.define=undef;}}(this));';
+header = ';(function(root,undef){var define;';
+footer = '}(this));';
 
 mainTemplate = header + fakeRequire + '{{content}}' + footer;
-moduleTemplate = '\nroot.define=function(factory){root.{{name}}=factory(require);}; root.define.amd={};\n{{content}}';
+defineTemplate = 'function(factory){root.{{name}}=factory(require);}';
 
 anachronize({
 	excludes: argv.exclude,
 	singleNamespace: argv.s,
 	package: argv.package,
 	output: argv.output,
-	template: {
-		main: template.bind(null, mainTemplate),
-		module: template.bind(null, moduleTemplate)
-	}
+	template: template.bind(null, mainTemplate),
+	defineTemplate: template.bind(null, defineTemplate)
 }, dirs).otherwise(function(e) {
 	throw e;
 });

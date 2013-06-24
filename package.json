@@ -5,7 +5,7 @@
 		"umd",
 		"amd"
 	],
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"homepage": "https://github.com/briancavalier/anachronize",
 	"author": {
 		"name": "Brian Cavalier",
@@ -29,7 +29,7 @@
 		"bin": "bin"
 	},
 	"scripts": {
-		"test": "jshint . && bin/anachronize -o test/single.js -p test/fixture/package.json test/fixture/*.js && open test/index.html"
+		"test": "jshint . && bin/anachronize -o test/out.js -p test/fixture/package.json test/fixture/*.js && open test/index.html"
 	},
 	"engines": {
 		"node": ">= 0.8.0"
