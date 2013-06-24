@@ -1,0 +1,4 @@
+.idea/
+.gitignore/
+.travis.yml
+/node_modules/

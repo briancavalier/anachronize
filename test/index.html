@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Single</title>
+    <script src="single.js"></script>
+    <script>
+        (function() {
+            assert(window.single.value === 'worked', 'main module');
+            assert(window.single.test_fixture_m1 === 'm1 worked', 'submodule w/require');
+            assert(window.single.test_fixture_m2 === 'm2 worked', 'submodule');
+
+            function assert(condition, msg) {
+                if(condition) {
+                    console.log('SUCCESS', msg);
+                } else {
+                    throw new Error('FAIL: ' + msg);
+                }
+            }
+
+        }());
+    </script>
+</head>
+<body>
+
+</body>
+</html>

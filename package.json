@@ -1,0 +1,47 @@
+{
+	"name": "anachronize",
+	"description": "Expose a specific format of UMD modules as global vars",
+	"keywords": [
+		"umd",
+		"amd"
+	],
+	"version": "0.1.0",
+	"homepage": "https://github.com/briancavalier/anachronize",
+	"author": {
+		"name": "Brian Cavalier",
+		"email": "brian@hovercraftstudios.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/briancavalier/anachronize.git"
+	},
+	"bugs": {
+		"url": "https://github.com/briancavalier/anachronize/issues"
+	},
+	"licenses": [
+		{
+			"type": "MIT",
+			"url": "https://github.com/briancavalier/anachronize/blob/master/LICENSE-MIT"
+		}
+	],
+	"main": "lib/anachronize",
+	"directories": {
+		"bin": "bin"
+	},
+	"scripts": {
+		"test": "jshint . && bin/anachronize -o test/single.js -p test/fixture/package.json test/fixture/*.js && open test/index.html"
+	},
+	"engines": {
+		"node": ">= 0.8.0"
+	},
+	"dependencies": {
+		"optimist": "~0.5",
+		"when": "~2",
+		"glob": "~3",
+		"minimatch": "~0.2"
+	},
+	"devDependencies": {
+		"jshint": "~2",
+		"open": "~0"
+	}
+}

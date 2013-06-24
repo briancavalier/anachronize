@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+
+var argv, anachronize, dirs, header, footer, template, fakeRequire, mainTemplate, moduleTemplate;
+
+argv = require('optimist')
+	.usage('Usage $0 -o output-file [input-files...]')
+	.options('o', {
+		alias: 'output',
+		demand: 'true',
+		describe: 'Output js file'
+	})
+	.options('p', {
+		alias: 'package',
+		default: './package.json',
+		describe: 'Location of package.json file containing a "name" and "main"'
+	})
+	.options('x', {
+		alias: 'exclude',
+		describe: 'Exclude a file or files'
+	})
+	.boolean('s')
+	.options('s', {
+		alias: 'single-namespace',
+		default: false,
+		describe: 'Add all modules as properties onto a single top-level main module'
+	})
+	.argv;
+
+dirs = argv._.length ? argv._ : ['./*.js'];
+
+anachronize = require('../lib/anachronize');
+template = require('../lib/template');
+
+fakeRequire = 'function require(id){return id.split(\'./\')[1] == \'{{main}}\' ? root.{{main}} : root[id.replace(\'../\', \'{{namespacePrefix}}\')]; }';
+header = ';(function(root,undef){';
+footer = 'try{delete root.define;}catch(e){root.define=undef;}}(this));';
+
+mainTemplate = header + fakeRequire + '{{content}}' + footer;
+moduleTemplate = '\nroot.define=function(factory){root.{{name}}=factory(require);}; root.define.amd={};\n{{content}}';
+
+anachronize({
+	excludes: argv.exclude,
+	singleNamespace: argv.s,
+	package: argv.package,
+	output: argv.output,
+	template: {
+		main: template.bind(null, mainTemplate),
+		module: template.bind(null, moduleTemplate)
+	}
+}, dirs).otherwise(function(e) {
+	throw e;
+});
