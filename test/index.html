@@ -7,8 +7,8 @@
     <script>
         (function(window) {
             assert(window.single.value === 'worked', 'main module');
-            assert(window.single.test_fixture_m1 === 'm1 worked', 'submodule w/require');
-            assert(window.single.test_fixture_m2 === 'm2 worked', 'submodule');
+            assert(window.single.m1 === 'm1 worked', 'submodule w/require');
+            assert(window.single.m2 === 'm2 worked', 'submodule');
 
             function assert(condition, msg) {
                 if(condition) {

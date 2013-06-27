@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var argv, anachronize, dirs, header, footer, template, fakeRequire, mainTemplate, defineTemplate;
+var argv, anachronize, dirs, header, footer, template, mainTemplate, defineTemplate;
 
 argv = require('optimist')
 	.usage('Usage $0 -o output-file [input-files...]')
@@ -31,12 +31,11 @@ dirs = argv._.length ? argv._ : ['./*.js'];
 anachronize = require('../lib/anachronize');
 template = require('../lib/template');
 
-fakeRequire = 'function require(id){return id.split(\'./\')[1] == \'{{main}}\' ? root.{{main}} : root[id.replace(\'../\', \'{{namespacePrefix}}\')]; }';
 header = ';(function(root,undef){var define;';
 footer = '}(this));';
 
-mainTemplate = header + fakeRequire + '{{content}}' + footer;
-defineTemplate = 'function(factory){root.{{name}}=factory(require);}';
+mainTemplate = header + '{{content}}' + footer;
+defineTemplate = 'function(factory){root.{{global}}=factory(require);}';
 
 anachronize({
 	excludes: argv.exclude,
