@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 
-var argv, anachronize, dirs, header, footer, template, mainTemplate, defineTemplate;
+var argv, anachronize, dirs;
 
 argv = require('optimist')
 	.usage('Usage $0 -o output-file [input-files...]')
 	.options('o', {
 		alias: 'output',
-		demand: 'true',
-		describe: 'Output js file'
+		describe: 'Output file. Defaults to stdout'
 	})
 	.options('p', {
 		alias: 'package',
@@ -29,20 +28,12 @@ argv = require('optimist')
 dirs = argv._.length ? argv._ : ['./*.js'];
 
 anachronize = require('../lib/anachronize');
-template = require('../lib/template');
-
-header = ';(function(__root__){';
-footer = '}(this));';
-
-mainTemplate = header + '{{content}}' + footer;
 
 anachronize({
 	excludes: argv.exclude,
 	singleNamespace: argv.s,
 	package: argv.package,
-	output: argv.output,
-	template: template.bind(null, mainTemplate),
-	defineTemplate: template.bind(null, defineTemplate)
+	output: argv.output
 }, dirs).otherwise(function(e) {
 	throw e;
 });
