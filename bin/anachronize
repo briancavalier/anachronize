@@ -31,11 +31,10 @@ dirs = argv._.length ? argv._ : ['./*.js'];
 anachronize = require('../lib/anachronize');
 template = require('../lib/template');
 
-header = ';(function(root,undef){var define;';
+header = ';(function(__root__){';
 footer = '}(this));';
 
 mainTemplate = header + '{{content}}' + footer;
-defineTemplate = 'function(factory){root.{{global}}=factory(require);}';
 
 anachronize({
 	excludes: argv.exclude,
